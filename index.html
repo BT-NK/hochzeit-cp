@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>class Marriage {}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   KONFIGURATION — hier alles anpassen, ohne den Rest zu suchen
+   ============================================================ */
+
+:root{
+  --void:   #0a0e14;   /* Hintergrund, fast schwarz */
+  --panel:  #10151f;   /* Panels / Karten */
+  --panel-2:#161c28;   /* Panels hell */
+  --line:   #232b38;   /* Trennlinien */
+  --rose:   #ff5d8f;   /* Liebe / Akzent */
+  --mint:   #7ee787;   /* Terminal-Erfolg */
+  --amber:  #e8b339;   /* Kommentare / Warnung */
+  --paper:  #dce3ea;   /* Haupttext */
+  --fog:    #7c8798;   /* gedämpfter Text */
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--void);
+  color:var(--paper);
+  font-family:'Inter',sans-serif;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:"";
+  position:fixed; inset:0;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255,93,143,0.06), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(126,231,135,0.05), transparent 40%);
+  pointer-events:none;
+  z-index:0;
+}
+.mono{font-family:'JetBrains Mono', monospace;}
+.serif{font-family:'Cormorant Garamond', serif;}
+
+::selection{background:var(--rose); color:var(--void);}
+
+/* focus visibility */
+button:focus-visible, input:focus-visible{
+  outline:2px solid var(--rose);
+  outline-offset:2px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+}
+
+/* ---------------- SCREEN LAYOUT ---------------- */
+.screen{
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+.screen.active{display:flex;}
+
+/* ---------------- LOGIN ---------------- */
+#login-screen{flex-direction:column; gap:28px;}
+
+.login-card{
+  width:100%;
+  max-width:460px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:10px;
+  overflow:hidden;
+  box-shadow:0 30px 80px -20px rgba(0,0,0,0.6);
+}
+.login-card__titlebar{
+  display:flex; align-items:center; gap:8px;
+  padding:12px 16px;
+  background:var(--panel-2);
+  border-bottom:1px solid var(--line);
+}
+.dot{width:10px; height:10px; border-radius:50%;}
+.dot.red{background:#ff5f56;}
+.dot.yellow{background:#ffbd2e;}
+.dot.green{background:#27c93f;}
+.login-card__filename{
+  margin-left:8px; font-size:12.5px; color:var(--fog);
+}
+.login-card__body{padding:22px 22px 26px;}
+
+.code-snippet{
+  font-size:12.5px; line-height:1.65;
+  color:var(--fog);
+  white-space:pre;
+  margin:0 0 18px;
+  overflow-x:auto;
+}
+.code-snippet .kw{color:#ff8fb3;}
+.code-snippet .type{color:var(--mint);}
+.code-snippet .cmt{color:var(--amber); opacity:0.85;}
+
+.field{margin-bottom:14px;}
+.field label{
+  display:block; font-size:12px; text-transform:uppercase;
+  letter-spacing:0.06em; color:var(--fog); margin-bottom:6px;
+}
+.field input{
+  width:100%; padding:11px 12px;
+  background:var(--void); color:var(--mint);
+  border:1px solid var(--line); border-radius:6px;
+  font-family:'JetBrains Mono', monospace; font-size:13.5px;
+  letter-spacing:0.03em;
+}
+.field input::placeholder{color:#3d4656;}
+.field input:focus{border-color:var(--rose);}
+
+.login-btn{
+  width:100%; padding:12px; margin-top:6px;
+  background:var(--rose); color:var(--void);
+  border:none; border-radius:6px;
+  font-family:'JetBrains Mono', monospace; font-weight:700; font-size:13.5px;
+  cursor:pointer; transition:transform .15s ease, filter .15s ease;
+}
+.login-btn:hover{filter:brightness(1.08); transform:translateY(-1px);}
+.login-btn:active{transform:translateY(0);}
+
+.login-hint{
+  margin-top:14px; font-size:12px; color:var(--fog);
+  line-height:1.5;
+}
+.login-error{
+  margin-top:12px; font-size:12.5px; color:#ff6b6b;
+  font-family:'JetBrains Mono', monospace;
+  display:none;
+}
+.login-error.show{display:block;}
+
+/* ---------------- CARD / GIT LOG ---------------- */
+#card-screen{flex-direction:column; padding:60px 20px 100px;}
+.card-wrap{width:100%; max-width:700px; margin:0 auto;}
+
+.repo-header{
+  font-family:'JetBrains Mono', monospace;
+  font-size:12.5px; color:var(--fog);
+  margin-bottom:36px; text-align:center;
+}
+.repo-header .accent{color:var(--rose);}
+
+.commit-log{border-left:2px solid var(--line); padding-left:22px; margin-bottom:56px;}
+.commit{
+  position:relative; margin-bottom:26px;
+  opacity:0; transform:translateY(8px);
+  animation:riseIn .6s ease forwards;
+}
+.commit::before{
+  content:""; position:absolute; left:-28px; top:4px;
+  width:10px; height:10px; border-radius:50%;
+  background:var(--mint); box-shadow:0 0 0 4px var(--void);
+}
+.commit__meta{
+  font-family:'JetBrains Mono', monospace; font-size:11.5px;
+  color:var(--fog); margin-bottom:4px;
+}
+.commit__meta .hash{color:var(--amber);}
+.commit__subject{
+  font-family:'JetBrains Mono', monospace; font-size:14px;
+  color:var(--paper); font-weight:500; margin:0 0 4px;
+}
+.commit__body{
+  font-size:13.5px; color:var(--fog); margin:0;
+}
+
+@keyframes riseIn{to{opacity:1; transform:translateY(0);}}
+
+.love-letter{
+  text-align:center; padding:10px 8px 40px;
+  border-top:1px dashed var(--line);
+  margin-top:10px;
+}
+.love-letter h1{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-weight:500;
+  font-size:clamp(28px, 5vw, 44px);
+  color:var(--paper); margin:0 0 22px;
+  line-height:1.25;
+}
+.love-letter h1 .accent{color:var(--rose);}
+.love-letter p{
+  font-family:'Cormorant Garamond', serif;
+  font-size:clamp(17px, 2.4vw, 20px);
+  color:var(--fog); line-height:1.75;
+  max-width:560px; margin:0 auto 16px;
+}
+
+.start-btn-wrap{text-align:center; margin-top:44px;}
+.start-btn{
+  font-family:'JetBrains Mono', monospace;
+  font-size:14.5px; font-weight:700;
+  color:var(--void); background:var(--mint);
+  border:none; border-radius:6px;
+  padding:15px 30px; cursor:pointer;
+  letter-spacing:0.02em;
+  transition:transform .15s ease, filter .15s ease;
+}
+.start-btn:hover{filter:brightness(1.08); transform:translateY(-2px);}
+.start-btn:before{content:"$ "; opacity:0.6;}
+
+/* ---------------- BOOT / CONSOLE ---------------- */
+#boot-screen{
+  background:#000; align-items:flex-start; justify-content:flex-start;
+  padding:0; z-index:5;
+}
+.console{
+  width:100%; height:100vh; padding:40px 8vw;
+  font-family:'JetBrains Mono', monospace; font-size:14px;
+  color:var(--mint); overflow-y:auto;
+}
+.console-line{margin-bottom:8px; white-space:pre-wrap; opacity:0;}
+.console-line.show{opacity:1;}
+.console-line .ok{color:var(--mint);}
+.console-line .info{color:#8ab4ff;}
+.console-line .warn{color:var(--amber);}
+.console-line .dim{color:#4a5568;}
+
+.back-btn{
+  position:fixed; top:18px; left:18px; z-index:7;
+  background:transparent; border:1px solid var(--line);
+  color:var(--fog); padding:8px 14px; border-radius:6px;
+  font-size:12.5px; cursor:pointer;
+  transition:border-color .15s ease, color .15s ease;
+}
+.back-btn:hover{border-color:var(--rose); color:var(--paper);}
+.back-btn .dim-txt{color:#4a5568;}
+.back-btn:hover .dim-txt{color:var(--fog);}
+
+.bar-track{
+  display:inline-block; width:260px; background:#1a1f2a;
+  border-radius:3px; overflow:hidden; height:10px;
+  vertical-align:middle; margin-left:8px;
+}
+.bar-fill{
+  height:100%; width:0%; background:var(--mint);
+  transition:width 1.6s ease;
+}
+
+.cursor{
+  display:inline-block; width:8px; height:16px;
+  background:var(--mint); vertical-align:middle;
+  animation:blink 1s step-end infinite;
+  margin-left:2px;
+}
+@keyframes blink{50%{opacity:0;}}
+
+.finale{
+  display:none; text-align:center; padding:60px 20px;
+}
+.finale.show{display:block;}
+.finale h2{
+  font-family:'Cormorant Garamond', serif; font-style:italic;
+  color:var(--rose); font-size:clamp(30px,6vw,52px); margin:0 0 18px;
+}
+.finale .meta-code{
+  font-family:'JetBrains Mono', monospace; color:var(--fog);
+  font-size:13px; line-height:1.9; text-align:left;
+  display:inline-block; background:var(--panel);
+  border:1px solid var(--line); border-radius:8px;
+  padding:20px 24px; margin-top:10px;
+}
+.finale .meta-code .kw{color:#ff8fb3;}
+.finale .meta-code .str{color:var(--amber);}
+.finale .meta-code .type{color:var(--mint);}
+
+.hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:6;}
+.heart{
+  position:absolute; top:-40px; color:var(--rose);
+  font-size:18px; animation:fall linear forwards;
+}
+@keyframes fall{
+  to{ transform:translateY(110vh) rotate(360deg); opacity:0.2; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     LOGIN SCREEN
+     ============================================================ -->
+<div id="login-screen" class="screen active">
+  <div class="login-card">
+    <div class="login-card__titlebar">
+      <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+      <span class="login-card__filename mono">auth.ts</span>
+    </div>
+    <div class="login-card__body">
+      <pre class="code-snippet"><span class="kw">public class</span> <span class="type">Husband</span>
+{
+    <span class="kw">private string</span> User = <span class="cmt">/* auf deiner Tasse */</span>
+    <span class="kw">private string</span> Password = <span class="cmt">/* auf deiner Tasse */</span>
+}
+
+<span class="kw">public class</span> <span class="type">Wife</span>
+{
+    <span class="kw">private string</span> User = <span class="cmt">/* auf deiner Tasse */</span>
+    <span class="kw">private string</span> Password = <span class="cmt">/* auf deiner Tasse */</span>
+}</pre>
+
+      <form id="login-form">
+        <div class="field">
+          <label for="user-input">username</label>
+          <input id="user-input" class="mono" type="text" placeholder="entschlüsselter Wert" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="pass-input">password</label>
+          <input id="pass-input" class="mono" type="text" placeholder="entschlüsselter Wert" autocomplete="off" spellcheck="false">
+        </div>
+        <button type="submit" class="login-btn">decrypt &amp; login</button>
+      </form>
+
+      <p class="login-error mono" id="login-error">bash: login: Zugriff verweigert. Versuche es erneut.</p>
+
+      <p class="login-hint">Tipp: Auf eurer Tasse steht der Code als Hex. Zwei Hex-Ziffern ergeben ein Zeichen (z.&nbsp;B. <span class="mono">63</span> → <span class="mono">c</span>). Entschlüsselt eingeben, nicht den Hex-Code selbst.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     CARD SCREEN (Git-Log Liebesgeschichte)
+     ============================================================ -->
+<div id="card-screen" class="screen">
+  <div class="card-wrap">
+    <div class="repo-header">
+      $ git log <span class="accent">christopher-and-patrizia</span> --graph --pretty
+    </div>
+
+    <div class="commit-log" id="commit-log"><!-- wird per JS befüllt --></div>
+
+    <div class="love-letter">
+      <h1>Zwei <span class="accent">Branches</span>,<br>ein gemeinsamer <span class="accent">Merge</span>.</h1>
+      <p id="love-text"><!-- wird per JS befüllt --></p>
+    </div>
+
+    <div class="start-btn-wrap">
+      <button class="start-btn mono" id="start-marriage-btn">start_marriage.sh</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     BOOT SCREEN (Console + Finale)
+     ============================================================ -->
+<div id="boot-screen" class="screen">
+  <button class="back-btn mono" id="back-btn">$ cd .. <span class="dim-txt">(zurück zur Karte)</span></button>
+  <div class="console" id="console">
+    <div id="console-lines"></div>
+    <div class="finale" id="finale">
+      <h2>Marriage v1.0 is now running!</h2>
+      <div class="meta-code mono" id="finale-meta"><!-- wird per JS befüllt --></div>
+    </div>
+  </div>
+</div>
+
+<div class="hearts" id="hearts"></div>
+
+<script>
+/* ============================================================
+   ALLES PERSÖNLICHE STEHT HIER — Namen, Zugangsdaten, Texte,
+   Boot-Nachrichten. Der Rest des Scripts ist "nur" Technik.
+   ============================================================ */
+
+const CONFIG = {
+
+  // Anzeigenamen
+  husbandName: "Christopher",
+  wifeName: "Patrizia",
+
+  // Zugangsdaten wie sie (klartext) auf den Tassen als Hex stehen.
+  // Husband-Tasse: user=christopher, password=patrizia
+  // Wife-Tasse:    user=patrizia,    password=christopher
+  // -> beide Tassen führen zum selben Login, jede kennt aber nur
+  //    die eigene Hälfte + den Namen des/der anderen.
+  validLogins: [
+    { user: "christopher", password: "patrizia" },
+    { user: "patrizia", password: "christopher" }
+  ],
+
+  // Git-Log Liebesgeschichte. Frei anpassbar/ergänzbar.
+  // hash: irgendein 7-stelliger Hex-String, rein dekorativ.
+  storyCommits: [
+    {
+      hash: "a1f9c02",
+      subject: "Initial commit",
+      body: "Zwei völlig unabhängige Systeme lernen sich kennen."
+    },
+    {
+      hash: "3d81e4b",
+      subject: "feat: erstes Date hinzugefügt",
+      body: "Ohne Doku, ohne Tests — hat trotzdem sofort funktioniert."
+    },
+    {
+      hash: "9c02aa1",
+      subject: "fix: Kommunikationsprobleme behoben",
+      body: "Danke an @Geduld und @Humor für den Beitrag."
+    },
+    {
+      hash: "e5f710c",
+      subject: "feature: gemeinsame Wohnung deployed",
+      body: "Production-ready. Keine Rollback-Strategie mehr nötig."
+    },
+    {
+      hash: "7b40d22",
+      subject: "release: Verlobung v0.9-beta",
+      body: "Feature-complete. Nur noch ein Merge steht aus."
+    }
+  ],
+
+  // Haupttext der Karte (Fließtext unter der Überschrift)
+  loveText: `Liebe(r) ${'{husbandName}'} und ${'{wifeName}'},<br><br>
+    ihr habt es geschafft, aus zwei komplett unterschiedlichen Codebasen
+    ein System zu bauen, das seit Jahren stabil läuft — ganz ohne
+    Refactoring der Grundwerte. Heute committet ihr den größten Merge
+    eures Lebens. Wir freuen uns riesig, live dabei zu sein, und
+    wünschen euch eine Ehe mit wenig Bugs, viel Uptime und Liebe
+    als never-ending process.`,
+
+  // Boot-Sequenz nach Klick auf "start_marriage.sh"
+  // type: "info" | "ok" | "warn" | "dim" | "bar" (Ladebalken) | "pause"
+  bootLines: [
+    { type: "info", text: "booting MarriageOS v1.0 ..." },
+    { type: "dim",  text: "loading kernel modules: trust.ko, humor.ko, geduld.ko" },
+    { type: "ok",   text: "[ OK ] kernel modules loaded" },
+    { type: "pause" },
+    { type: "info", text: "checking compatibility ..." },
+    { type: "bar",  text: "compatibility check" },
+    { type: "ok",   text: "[ OK ] 100% match found" },
+    { type: "pause" },
+    { type: "info", text: `mounting /home/${'{husbandName_lc}'} + /home/${'{wifeName_lc}'} -> /shared/leben` },
+    { type: "ok",   text: "[ OK ] filesystem merged, 0 conflicts" },
+    { type: "pause" },
+    { type: "info", text: `connecting ${'{husbandName}'} <-> ${'{wifeName}'} ...` },
+    { type: "ok",   text: "[ OK ] connection established" },
+    { type: "pause" },
+    { type: "warn", text: "warning: reboot nicht vorgesehen (permanent process)" },
+    { type: "pause" }
+  ],
+
+  // Metadaten im Finale-Codeblock (frei anpassbar / Platzhalter)
+  weddingDate: "TT.MM.JJJJ",
+  weddingLocation: "Ort eintragen"
+};
+
+/* ============================================================
+   TECHNIK — ab hier normalerweise nichts mehr anfassen
+   ============================================================ */
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// --- Login ---
+document.getElementById('login-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  const userTyped = document.getElementById('user-input').value.toLowerCase().trim();
+  const passTyped = document.getElementById('pass-input').value.toLowerCase().trim();
+
+  const match = CONFIG.validLogins.some(l =>
+    l.user.toLowerCase() === userTyped && l.password.toLowerCase() === passTyped
+  );
+
+  if (match){
+    document.getElementById('login-error').classList.remove('show');
+    buildCard();
+    showScreen('card-screen');
+  } else {
+    document.getElementById('login-error').classList.add('show');
+  }
+});
+
+// --- Card building ---
+function buildCard(){
+  const log = document.getElementById('commit-log');
+  log.innerHTML = '';
+  CONFIG.storyCommits.forEach((c, i) => {
+    const div = document.createElement('div');
+    div.className = 'commit';
+    div.style.animationDelay = (i * 0.15) + 's';
+    div.innerHTML = `
+      <div class="commit__meta mono"><span class="hash">${c.hash}</span> — author: ${CONFIG.husbandName} &amp; ${CONFIG.wifeName}</div>
+      <p class="commit__subject">${c.subject}</p>
+      <p class="commit__body">${c.body}</p>
+    `;
+    log.appendChild(div);
+  });
+
+  const loveHtml = CONFIG.loveText
+    .replace(/\$\{'\{husbandName\}'\}/g, CONFIG.husbandName)
+    .replace(/\$\{'\{wifeName\}'\}/g, CONFIG.wifeName);
+  document.getElementById('love-text').innerHTML = loveHtml;
+}
+
+// --- Boot sequence ---
+document.getElementById('back-btn').addEventListener('click', function(){
+  showScreen('card-screen');
+});
+
+document.getElementById('start-marriage-btn').addEventListener('click', function(){
+  showScreen('boot-screen');
+  runBoot();
+});
+
+async function runBoot(){
+  const container = document.getElementById('console-lines');
+  const finale = document.getElementById('finale');
+  container.innerHTML = '';
+  finale.classList.remove('show');
+
+  const husbandLc = CONFIG.husbandName.toLowerCase();
+  const wifeLc = CONFIG.wifeName.toLowerCase();
+
+  for (const line of CONFIG.bootLines){
+    if (line.type === 'pause'){
+      await sleep(320);
+      continue;
+    }
+    if (line.type === 'bar'){
+      const wrap = document.createElement('div');
+      wrap.className = 'console-line show';
+      wrap.innerHTML = `<span class="info">${line.text} </span><span class="bar-track"><span class="bar-fill"></span></span>`;
+      container.appendChild(wrap);
+      const fill = wrap.querySelector('.bar-fill');
+      container.scrollTop = container.scrollHeight;
+
+      await animateBar(fill, 1600);
+      await sleep(150);
+      continue;
+    }
+
+    let text = line.text
+      .replace(/\$\{'\{husbandName\}'\}/g, CONFIG.husbandName)
+      .replace(/\$\{'\{wifeName\}'\}/g, CONFIG.wifeName)
+      .replace(/\$\{'\{husbandName_lc\}'\}/g, husbandLc)
+      .replace(/\$\{'\{wifeName_lc\}'\}/g, wifeLc);
+
+    const el = document.createElement('div');
+    el.className = 'console-line ' + line.type;
+    el.textContent = text;
+    container.appendChild(el);
+    requestAnimationFrame(() => el.classList.add('show'));
+    await sleep(380);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  await sleep(400);
+
+  document.getElementById('finale-meta').innerHTML = `
+<span class="kw">class</span> <span class="type">Marriage</span> <span class="kw">extends</span> <span class="type">Husband</span>, <span class="type">Wife</span> {
+  date:     <span class="str">"${CONFIG.weddingDate}"</span>
+  location: <span class="str">"${CONFIG.weddingLocation}"</span>
+  status:   <span class="str">"running"</span>
+}`;
+  finale.classList.add('show');
+  launchHearts();
+}
+
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+function animateBar(el, duration){
+  return new Promise(resolve => {
+    const start = performance.now();
+    function step(now){
+      const elapsed = now - start;
+      const pct = Math.min(100, (elapsed / duration) * 100);
+      el.style.width = pct + '%';
+      if (pct < 100){
+        requestAnimationFrame(step);
+      } else {
+        resolve();
+      }
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+// --- Confetti hearts ---
+function launchHearts(){
+  const holder = document.getElementById('hearts');
+  const symbols = ['♥','❤','💍'];
+  for (let i = 0; i < 40; i++){
+    setTimeout(() => {
+      const h = document.createElement('div');
+      h.className = 'heart';
+      h.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+      h.style.left = Math.random()*100 + 'vw';
+      h.style.fontSize = (14 + Math.random()*18) + 'px';
+      h.style.animationDuration = (3 + Math.random()*3) + 's';
+      holder.appendChild(h);
+      setTimeout(() => h.remove(), 7000);
+    }, i * 80);
+  }
+}
+</script>
+</body>
+</html>
