@@ -298,6 +298,21 @@ button:focus-visible, input:focus-visible{
   opacity:1; transform:scale(1) translateY(0);
 }
 
+.scroll-hint{
+  position:fixed; bottom:16px; left:50%;
+  z-index:8; display:none; flex-direction:column; align-items:center; gap:0px;
+  color:var(--rose); font-family:'JetBrains Mono', monospace; font-size:10.5px;
+  letter-spacing:0.08em; text-transform:uppercase;
+  pointer-events:none; opacity:0.9;
+  animation:scrollBounce 1.6s ease-in-out infinite;
+}
+.scroll-hint.show{display:flex;}
+.scroll-hint__arrow{font-size:20px; line-height:1; margin-top:-2px;}
+@keyframes scrollBounce{
+  0%,100%{transform:translate(-50%,0);}
+  50%{transform:translate(-50%,8px);}
+}
+
 .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:6;}
 .heart{
   position:absolute; top:-40px; color:var(--rose);
@@ -383,6 +398,11 @@ button:focus-visible, input:focus-visible{
 </div>
 
 <div class="hearts" id="hearts"></div>
+
+<div class="scroll-hint" id="scroll-hint" aria-hidden="true">
+  <span>scroll</span>
+  <span class="scroll-hint__arrow">⌄</span>
+</div>
 
 <script>
 const CONFIG = {
@@ -474,7 +494,25 @@ const CONFIG = {
 function showScreen(id){
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  setTimeout(updateScrollHint, 60);
 }
+
+function updateScrollHint(){
+  const hint = document.getElementById('scroll-hint');
+  // Beim Boot-Screen scrollt eine eigene Konsole, nicht die Seite selbst
+  if (document.getElementById('boot-screen').classList.contains('active')){
+    hint.classList.remove('show');
+    return;
+  }
+  const overflowing = document.body.scrollHeight > window.innerHeight + 40;
+  const atBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 40;
+  hint.classList.toggle('show', overflowing && !atBottom);
+}
+
+window.addEventListener('scroll', updateScrollHint);
+window.addEventListener('resize', updateScrollHint);
+window.addEventListener('load', () => setTimeout(updateScrollHint, 100));
 
 // --- Login ---
 document.getElementById('login-form').addEventListener('submit', function(e){
@@ -516,6 +554,7 @@ function buildCard(){
     .replace(/\{wifeName\}/g, CONFIG.wifeName);
   document.getElementById('love-text').innerHTML = loveHtml;
   document.getElementById('signature-text').innerHTML = CONFIG.signature;
+  setTimeout(updateScrollHint, 60);
 }
 
 // --- Boot sequence ---
