@@ -509,8 +509,7 @@ function showScreen(id){
 function updateScrollHint(){
   const hint = document.getElementById('scroll-hint');
   // Beim Boot-Screen scrollt eine eigene Konsole, beim Login soll nie gescrollt werden müssen
-  if (document.getElementById('boot-screen').classList.contains('active') ||
-      document.getElementById('login-screen').classList.contains('active')){
+  if (document.getElementById('login-screen').classList.contains('active')){
     hint.classList.remove('show');
     return;
   }
