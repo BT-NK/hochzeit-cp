@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>class Marriage {}</title>
+<title>❤💍 C+P 💍❤</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500;1,600&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -154,20 +154,20 @@ button:focus-visible, input:focus-visible{
 }
 .repo-header .accent{color:var(--rose);}
 
-.commit-log{border-left:2px solid var(--line); padding-left:22px; margin-bottom:56px;}
+.commit-log{border-left:2px solid var(--line); border-right:2px solid var(--line); padding:0 22px; margin:0 auto 56px; max-width:480px; text-align:center;}
 .commit{
   position:relative; margin-bottom:26px;
   opacity:0; transform:translateY(8px);
   animation:riseIn .6s ease forwards;
 }
 .commit::before{
-  content:""; position:absolute; left:-28px; top:4px;
+  content:""; display:block; position:absolute; left:0px; top:4px;
   width:10px; height:10px; border-radius:50%;
-  background:var(--mint); box-shadow:0 0 0 4px var(--void);
+  background:var(--mint); margin:0 auto 10px;
 }
 .commit__meta{
   font-family:'JetBrains Mono', monospace; font-size:11.5px;
-  color:var(--fog); margin-bottom:4px;
+  color:var(--fog); margin-bottom:4px; text-align:center;
 }
 .commit__meta .hash{color:var(--amber);}
 .commit__subject{
@@ -199,6 +199,11 @@ button:focus-visible, input:focus-visible{
   color:var(--fog); line-height:1.75;
   max-width:560px; margin:0 auto 16px;
 }
+.love-letter .signature{
+  font-family:'Cormorant Garamond', serif;
+  font-style:italic; font-size:26px;
+  color:var(--rose); margin-top:26px;
+} 
 
 .start-btn-wrap{text-align:center; margin-top:44px;}
 .start-btn{
@@ -219,7 +224,7 @@ button:focus-visible, input:focus-visible{
   padding:0; z-index:5;
 }
 .console{
-  width:100%; height:100vh; padding:40px 8vw;
+  width:100%; height:100vh; padding:90px 8vw 40px;
   font-family:'JetBrains Mono', monospace; font-size:14px;
   color:var(--mint); overflow-y:auto;
 }
@@ -232,7 +237,7 @@ button:focus-visible, input:focus-visible{
 
 .back-btn{
   position:fixed; top:18px; left:18px; z-index:7;
-  background:transparent; border:1px solid var(--line);
+  background:var(--void); border:1px solid var(--line);
   color:var(--fog); padding:8px 14px; border-radius:6px;
   font-size:12.5px; cursor:pointer;
   transition:border-color .15s ease, color .15s ease;
@@ -248,7 +253,6 @@ button:focus-visible, input:focus-visible{
 }
 .bar-fill{
   height:100%; width:0%; background:var(--mint);
-  transition:width 1.6s ease;
 }
 
 .cursor{
@@ -278,6 +282,19 @@ button:focus-visible, input:focus-visible{
 .finale .meta-code .str{color:var(--amber);}
 .finale .meta-code .type{color:var(--mint);}
 
+.finale-photo{
+  display:block; margin:34px auto 0;
+  max-width:360px; width:80%;
+  border-radius:10px;
+  border:1px solid var(--line);
+  box-shadow:0 20px 60px -15px rgba(0,0,0,0.7);
+  opacity:0; transform:scale(0.85) translateY(20px);
+  transition:opacity 1s ease, transform 1s ease;
+}
+.finale-photo.show{
+  opacity:1; transform:scale(1) translateY(0);
+}
+
 .hearts{position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:6;}
 .heart{
   position:absolute; top:-40px; color:var(--rose);
@@ -301,16 +318,10 @@ button:focus-visible, input:focus-visible{
       <span class="login-card__filename mono">auth.ts</span>
     </div>
     <div class="login-card__body">
-      <pre class="code-snippet"><span class="kw">public class</span> <span class="type">Husband</span>
+      <pre class="code-snippet"><span class="kw">public class</span> <span class="type">Marriage</span>
 {
-    <span class="kw">private string</span> User = <span class="cmt">/* auf deiner Tasse */</span>
-    <span class="kw">private string</span> Password = <span class="cmt">/* auf deiner Tasse */</span>
-}
-
-<span class="kw">public class</span> <span class="type">Wife</span>
-{
-    <span class="kw">private string</span> User = <span class="cmt">/* auf deiner Tasse */</span>
-    <span class="kw">private string</span> Password = <span class="cmt">/* auf deiner Tasse */</span>
+    <span class="kw">private string</span> User = <span class="cmt">/* auf eurer Tasse */</span>
+    <span class="kw">private string</span> Password = <span class="cmt">/* auf eurer Tasse */</span>
 }</pre>
 
       <form id="login-form">
@@ -322,12 +333,10 @@ button:focus-visible, input:focus-visible{
           <label for="pass-input">password</label>
           <input id="pass-input" class="mono" type="text" placeholder="entschlüsselter Wert" autocomplete="off" spellcheck="false">
         </div>
-        <button type="submit" class="login-btn">decrypt &amp; login</button>
+        <button type="submit" class="login-btn">❤ login ❤</button>
       </form>
 
-      <p class="login-error mono" id="login-error">bash: login: Zugriff verweigert. Versuche es erneut.</p>
-
-      <p class="login-hint">Tipp: Auf eurer Tasse steht der Code als Hex. Zwei Hex-Ziffern ergeben ein Zeichen (z.&nbsp;B. <span class="mono">63</span> → <span class="mono">c</span>). Entschlüsselt eingeben, nicht den Hex-Code selbst.</p>
+      <p class="login-error mono" id="login-error">Zugriff verweigert. Versuche es erneut.</p>
     </div>
   </div>
 </div>
@@ -337,19 +346,20 @@ button:focus-visible, input:focus-visible{
      ============================================================ -->
 <div id="card-screen" class="screen">
   <div class="card-wrap">
-    <div class="repo-header">
+	<div class="love-letter">
+      <h1>Zwei <span class="accent">Branches</span>,<br>ein gemeinsamer <span class="accent">Merge</span>.</h1>
+      <p id="love-text"><!-- wird per JS befüllt --></p>
+	  <p class="signature" id="signature-text"><!-- wird per JS befüllt --></p>
+    </div>
+	
+	<div class="repo-header">
       $ git log <span class="accent">christopher-and-patrizia</span> --graph --pretty
     </div>
 
     <div class="commit-log" id="commit-log"><!-- wird per JS befüllt --></div>
 
-    <div class="love-letter">
-      <h1>Zwei <span class="accent">Branches</span>,<br>ein gemeinsamer <span class="accent">Merge</span>.</h1>
-      <p id="love-text"><!-- wird per JS befüllt --></p>
-    </div>
-
     <div class="start-btn-wrap">
-      <button class="start-btn mono" id="start-marriage-btn">start_marriage.sh</button>
+      <button class="start-btn mono" id="start-marriage-btn">start_marriage.exe</button>
     </div>
   </div>
 </div>
@@ -364,6 +374,7 @@ button:focus-visible, input:focus-visible{
     <div class="finale" id="finale">
       <h2>Marriage v1.0 is now running!</h2>
       <div class="meta-code mono" id="finale-meta"><!-- wird per JS befüllt --></div>
+	  <img class="finale-photo" id="finale-photo" alt="Christopher & Patrizia" onerror="this.style.display='none'">
     </div>
   </div>
 </div>
@@ -371,29 +382,18 @@ button:focus-visible, input:focus-visible{
 <div class="hearts" id="hearts"></div>
 
 <script>
-/* ============================================================
-   ALLES PERSÖNLICHE STEHT HIER — Namen, Zugangsdaten, Texte,
-   Boot-Nachrichten. Der Rest des Scripts ist "nur" Technik.
-   ============================================================ */
-
 const CONFIG = {
 
   // Anzeigenamen
   husbandName: "Christopher",
   wifeName: "Patrizia",
 
-  // Zugangsdaten wie sie (klartext) auf den Tassen als Hex stehen.
-  // Husband-Tasse: user=christopher, password=patrizia
-  // Wife-Tasse:    user=patrizia,    password=christopher
-  // -> beide Tassen führen zum selben Login, jede kennt aber nur
-  //    die eigene Hälfte + den Namen des/der anderen.
+  // Zugangsdaten
   validLogins: [
-    { user: "christopher", password: "patrizia" },
-    { user: "patrizia", password: "christopher" }
+    { user: "chrizia", password: "ehecp" }
   ],
 
-  // Git-Log Liebesgeschichte. Frei anpassbar/ergänzbar.
-  // hash: irgendein 7-stelliger Hex-String, rein dekorativ.
+  // Git-Log Liebesgeschichte.
   storyCommits: [
     {
       hash: "a1f9c02",
@@ -422,7 +422,7 @@ const CONFIG = {
     }
   ],
 
-  // Haupttext der Karte (Fließtext unter der Überschrift)
+  // Haupttext der Karte
   loveText: `Liebe(r) ${'{husbandName}'} und ${'{wifeName}'},<br><br>
     ihr habt es geschafft, aus zwei komplett unterschiedlichen Codebasen
     ein System zu bauen, das seit Jahren stabil läuft — ganz ohne
@@ -430,8 +430,11 @@ const CONFIG = {
     eures Lebens. Wir freuen uns riesig, live dabei zu sein, und
     wünschen euch eine Ehe mit wenig Bugs, viel Uptime und Liebe
     als never-ending process.`,
+	
+  // Unterschrift unter der Karte
+  signature: "eure Bernd &amp; Carla",
 
-  // Boot-Sequenz nach Klick auf "start_marriage.sh"
+  // Boot-Sequenz "start_marriage.exe"
   // type: "info" | "ok" | "warn" | "dim" | "bar" (Ladebalken) | "pause"
   bootLines: [
     { type: "info", text: "booting MarriageOS v1.0 ..." },
@@ -439,22 +442,26 @@ const CONFIG = {
     { type: "ok",   text: "[ OK ] kernel modules loaded" },
     { type: "pause" },
     { type: "info", text: "checking compatibility ..." },
-    { type: "bar",  text: "compatibility check" },
+    { type: "bar",  text: "compatibility check", duration: 2200 },
     { type: "ok",   text: "[ OK ] 100% match found" },
+	{ type: "info", text: `connecting ${'{husbandName}'} <-> ${'{wifeName}'} ...` },
+	{ type: "bar",  text: "establishing connection", duration: 1000  },
+    { type: "ok",   text: "[ OK ] 100% connected" },
+    { type: "pause" },
     { type: "pause" },
     { type: "info", text: `mounting /home/${'{husbandName_lc}'} + /home/${'{wifeName_lc}'} -> /shared/leben` },
     { type: "ok",   text: "[ OK ] filesystem merged, 0 conflicts" },
-    { type: "pause" },
-    { type: "info", text: `connecting ${'{husbandName}'} <-> ${'{wifeName}'} ...` },
-    { type: "ok",   text: "[ OK ] connection established" },
     { type: "pause" },
     { type: "warn", text: "warning: reboot nicht vorgesehen (permanent process)" },
     { type: "pause" }
   ],
 
   // Metadaten im Finale-Codeblock (frei anpassbar / Platzhalter)
-  weddingDate: "TT.MM.JJJJ",
-  weddingLocation: "Ort eintragen"
+  weddingDate: "17.07.2026",
+  weddingLocation: "St. Bartholomäus Kirche, Essen Oldenburg",
+  
+  // Dateiname des Hochzeitsfotos
+  weddingPhoto: "foto.jpg"
 };
 
 /* ============================================================
@@ -502,9 +509,10 @@ function buildCard(){
   });
 
   const loveHtml = CONFIG.loveText
-    .replace(/\$\{'\{husbandName\}'\}/g, CONFIG.husbandName)
-    .replace(/\$\{'\{wifeName\}'\}/g, CONFIG.wifeName);
+    .replace(/\{husbandName\}/g, CONFIG.husbandName)
+    .replace(/\{wifeName\}/g, CONFIG.wifeName);
   document.getElementById('love-text').innerHTML = loveHtml;
+  document.getElementById('signature-text').innerHTML = CONFIG.signature;
 }
 
 // --- Boot sequence ---
@@ -522,45 +530,50 @@ async function runBoot(){
   const finale = document.getElementById('finale');
   container.innerHTML = '';
   finale.classList.remove('show');
-
+  
+  const photoReset = document.getElementById('finale-photo');
+  photoReset.classList.remove('show');
+  
   const husbandLc = CONFIG.husbandName.toLowerCase();
   const wifeLc = CONFIG.wifeName.toLowerCase();
-
   for (const line of CONFIG.bootLines){
     if (line.type === 'pause'){
-      await sleep(320);
+      await sleep(700);
       continue;
     }
     if (line.type === 'bar'){
       const wrap = document.createElement('div');
       wrap.className = 'console-line show';
-      wrap.innerHTML = `<span class="info">${line.text} </span><span class="bar-track"><span class="bar-fill"></span></span>`;
+      wrap.innerHTML = `<span class="info">${line.text} </span><span class="bar-track"></span>`;
       container.appendChild(wrap);
-      const fill = wrap.querySelector('.bar-fill');
-      container.scrollTop = container.scrollHeight;
 
-      await animateBar(fill, 1600);
-      await sleep(150);
+      const track = wrap.querySelector('.bar-track');
+      const fill = document.createElement('span');
+      fill.style.display = 'block';
+      fill.style.height = '100%';
+      fill.style.width = '0%';
+      fill.style.background = '#7ee787';
+      track.appendChild(fill);
+
+      container.scrollTop = container.scrollHeight;
+      await animateBar(fill, line.duration || 2200);
+      await sleep(300);
       continue;
     }
-
     let text = line.text
-      .replace(/\$\{'\{husbandName\}'\}/g, CONFIG.husbandName)
-      .replace(/\$\{'\{wifeName\}'\}/g, CONFIG.wifeName)
-      .replace(/\$\{'\{husbandName_lc\}'\}/g, husbandLc)
-      .replace(/\$\{'\{wifeName_lc\}'\}/g, wifeLc);
-
+      .replace(/\{husbandName_lc\}/g, husbandLc)
+      .replace(/\{wifeName_lc\}/g, wifeLc)
+      .replace(/\{husbandName\}/g, CONFIG.husbandName)
+      .replace(/\{wifeName\}/g, CONFIG.wifeName);
     const el = document.createElement('div');
     el.className = 'console-line ' + line.type;
     el.textContent = text;
     container.appendChild(el);
     requestAnimationFrame(() => el.classList.add('show'));
-    await sleep(380);
+    await sleep(1000);
     container.scrollTop = container.scrollHeight;
   }
-
-  await sleep(400);
-
+  
   document.getElementById('finale-meta').innerHTML = `
 <span class="kw">class</span> <span class="type">Marriage</span> <span class="kw">extends</span> <span class="type">Husband</span>, <span class="type">Wife</span> {
   date:     <span class="str">"${CONFIG.weddingDate}"</span>
@@ -568,6 +581,11 @@ async function runBoot(){
   status:   <span class="str">"running"</span>
 }`;
   finale.classList.add('show');
+
+  const photo = document.getElementById('finale-photo');
+  photo.src = CONFIG.weddingPhoto;
+  setTimeout(() => photo.classList.add('show'), 400);
+
   launchHearts();
 }
 
@@ -579,7 +597,7 @@ function animateBar(el, duration){
     function step(now){
       const elapsed = now - start;
       const pct = Math.min(100, (elapsed / duration) * 100);
-      el.style.width = pct + '%';
+      el.style.width = pct.toFixed(1) + '%';
       if (pct < 100){
         requestAnimationFrame(step);
       } else {
@@ -593,8 +611,8 @@ function animateBar(el, duration){
 // --- Confetti hearts ---
 function launchHearts(){
   const holder = document.getElementById('hearts');
-  const symbols = ['♥','❤','💍'];
-  for (let i = 0; i < 40; i++){
+  const symbols = ['♥','❤','💍','💕'];
+  for (let i = 0; i < 100; i++){
     setTimeout(() => {
       const h = document.createElement('div');
       h.className = 'heart';
@@ -604,7 +622,7 @@ function launchHearts(){
       h.style.animationDuration = (3 + Math.random()*3) + 's';
       holder.appendChild(h);
       setTimeout(() => h.remove(), 7000);
-    }, i * 80);
+    }, i * 50);
   }
 }
 </script>
