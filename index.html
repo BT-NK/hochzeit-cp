@@ -509,7 +509,8 @@ function showScreen(id){
 function updateScrollHint(){
   const hint = document.getElementById('scroll-hint');
   // Beim Boot-Screen scrollt eine eigene Konsole, beim Login soll nie gescrollt werden müssen
-  if (document.getElementById('login-screen').classList.contains('active')){
+  if (document.getElementById('boot-screen').classList.contains('active') ||
+	  document.getElementById('login-screen').classList.contains('active')){
     hint.classList.remove('show');
     return;
   }
@@ -577,6 +578,7 @@ document.getElementById('start-marriage-btn').addEventListener('click', function
 
 async function runBoot(){
   const container = document.getElementById('console-lines');
+  const consoleEl = document.getElementById('console');
   const finale = document.getElementById('finale');
   container.innerHTML = '';
   finale.classList.remove('show');
@@ -605,7 +607,7 @@ async function runBoot(){
       fill.style.background = '#7ee787';
       track.appendChild(fill);
 
-      container.scrollTop = container.scrollHeight;
+      consoleEl.scrollTop = consoleEl.scrollHeight;
       await animateBar(fill, line.duration || 2200);
       await sleep(300);
       continue;
@@ -621,7 +623,7 @@ async function runBoot(){
     container.appendChild(el);
     requestAnimationFrame(() => el.classList.add('show'));
     await sleep(1000);
-    container.scrollTop = container.scrollHeight;
+    consoleEl.scrollTop = consoleEl.scrollHeight;
   }
   
   document.getElementById('finale-meta').innerHTML = `
