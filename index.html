@@ -71,7 +71,7 @@ button:focus-visible, input:focus-visible{
 .screen.active{display:flex;}
 
 /* ---------------- LOGIN ---------------- */
-#login-screen{flex-direction:column; gap:28px; padding:14px;}
+#login-screen{flex-direction:column; gap:28px; padding:10px;}
 
 .login-card{max-height:94dvh; overflow-y:auto;}
 
@@ -108,9 +108,9 @@ button:focus-visible, input:focus-visible{
 .code-snippet{
   font-size:11.5px; line-height:1.45;
   color:var(--fog);
-  white-space:pre;
+  white-space:pre-wrap;
+  word-break:break-word;
   margin:0 0 14px;
-  overflow-x:auto;
 }
 .code-snippet .kw{color:#ff8fb3;}
 .code-snippet .type{color:var(--mint);}
@@ -358,8 +358,8 @@ button:focus-visible, input:focus-visible{
     <div class="login-card__body">
       <pre class="code-snippet"><span class="kw">public class</span> <span class="type">Marriage</span>
 {
-    <span class="kw">private string</span> User = <span class="cmt">/* auf eurer Tasse */</span>
-    <span class="kw">private string</span> Password = <span class="cmt">/* auf eurer Tasse */</span>
+    <span class="kw">private string</span> User = <span class="cmt">/* Tasse */</span>
+    <span class="kw">private string</span> Password = <span class="cmt">/* Tasse */</span>
 }</pre>
 
       <form id="login-form">
