@@ -282,16 +282,28 @@ button:focus-visible, input:focus-visible{
 }
 .finale .meta-code{
   font-family:'JetBrains Mono', monospace; color:var(--fog);
-  font-size:13px; line-height:1.9; text-align:left;
-  white-space:pre-wrap;
-  display:inline-block; background:var(--panel);
+  font-size:13px; line-height:1.7; text-align:left;
+  display:block; width:min(92vw, 420px);
+  background:var(--panel);
   border:1px solid var(--line); border-radius:8px;
-  padding:20px 24px; margin-top:10px;
-  max-width:90vw; overflow-x:auto;
+  padding:18px 20px; margin:10px auto 0;
+  box-sizing:border-box;
 }
 .finale .meta-code .kw{color:#ff8fb3;}
 .finale .meta-code .str{color:var(--amber);}
 .finale .meta-code .type{color:var(--mint);}
+.finale .meta-code .meta-header,
+.finale .meta-code .meta-close{white-space:normal;}
+.finale .meta-code .meta-row{
+  display:flex; flex-wrap:wrap; gap:0 6px;
+  margin:4px 0 4px 16px;
+}
+.finale .meta-code .meta-row .lbl{color:var(--fog); flex-shrink:0;}
+.finale .meta-code .meta-row .val{word-break:break-word;}
+
+@media (max-width: 380px){
+  .finale .meta-code{font-size:12px; padding:16px;}
+}
 
 .finale-photo{
   display:block; margin:34px auto 0;
@@ -489,7 +501,8 @@ const CONFIG = {
 
   // Metadaten im Finale-Codeblock (frei anpassbar / Platzhalter)
   weddingDate: "17.07.2026",
-  weddingLocation: "St. Bartholomäus Kirche, Essen Oldenburg",
+  weddingVenue: "St. Bartholomäus Kirche",
+  weddingCity: "Essen Oldenburg",
   
   // Dateiname des Hochzeitsfotos
   weddingPhoto: "foto.jpg"
@@ -506,14 +519,28 @@ function showScreen(id){
   setTimeout(updateScrollHint, 60);
 }
 
+let bootFinished = false;
+
 function updateScrollHint(){
   const hint = document.getElementById('scroll-hint');
-  // Beim Boot-Screen scrollt eine eigene Konsole, beim Login soll nie gescrollt werden müssen
-  if (document.getElementById('boot-screen').classList.contains('active') ||
-	  document.getElementById('login-screen').classList.contains('active')){
+
+  if (document.getElementById('login-screen').classList.contains('active')){
     hint.classList.remove('show');
     return;
   }
+
+  if (document.getElementById('boot-screen').classList.contains('active')){
+    if (!bootFinished){
+      hint.classList.remove('show');
+      return;
+    }
+    const consoleEl = document.getElementById('console');
+    const overflowing = consoleEl.scrollHeight > consoleEl.clientHeight + 40;
+    const atBottom = (consoleEl.scrollTop + consoleEl.clientHeight) >= consoleEl.scrollHeight - 40;
+    hint.classList.toggle('show', overflowing && !atBottom);
+    return;
+  }
+
   const overflowing = document.body.scrollHeight > window.innerHeight + 40;
   const atBottom = (window.innerHeight + window.scrollY) >= document.body.scrollHeight - 40;
   hint.classList.toggle('show', overflowing && !atBottom);
@@ -522,6 +549,7 @@ function updateScrollHint(){
 window.addEventListener('scroll', updateScrollHint);
 window.addEventListener('resize', updateScrollHint);
 window.addEventListener('load', () => setTimeout(updateScrollHint, 100));
+document.getElementById('console').addEventListener('scroll', updateScrollHint);
 
 // --- Login ---
 document.getElementById('login-form').addEventListener('submit', function(e){
@@ -582,6 +610,7 @@ async function runBoot(){
   const finale = document.getElementById('finale');
   container.innerHTML = '';
   finale.classList.remove('show');
+  bootFinished = false;
   
   const photoReset = document.getElementById('finale-photo');
   photoReset.classList.remove('show');
@@ -627,16 +656,21 @@ async function runBoot(){
   }
   
   document.getElementById('finale-meta').innerHTML = `
-<span class="kw">class</span> <span class="type">Marriage</span> <span class="kw">extends</span> <span class="type">Husband</span>, <span class="type">Wife</span> {
-  date:     <span class="str">"${CONFIG.weddingDate}"</span>
-  location: <span class="str">"${CONFIG.weddingLocation}"</span>
-  status:   <span class="str">"running"</span>
-}`;
+    <div class="meta-header"><span class="kw">class</span> <span class="type">Marriage</span> <span class="kw">extends</span> <span class="type">Husband</span>, <span class="type">Wife</span> {</div>
+    <div class="meta-row"><span class="lbl">date:</span><span class="val str">"${CONFIG.weddingDate}"</span></div>
+    <div class="meta-row"><span class="lbl">venue:</span><span class="val str">"${CONFIG.weddingVenue}"</span></div>
+    <div class="meta-row"><span class="lbl">city:</span><span class="val str">"${CONFIG.weddingCity}"</span></div>
+    <div class="meta-row"><span class="lbl">status:</span><span class="val str">"running"</span></div>
+    <div class="meta-close">}</div>
+  `;
   finale.classList.add('show');
 
   const photo = document.getElementById('finale-photo');
   photo.src = CONFIG.weddingPhoto;
   setTimeout(() => photo.classList.add('show'), 400);
+
+  bootFinished = true;
+  setTimeout(updateScrollHint, 500);
 
   launchHearts();
 }
