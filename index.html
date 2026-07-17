@@ -214,6 +214,15 @@ button:focus-visible, input:focus-visible{
   color:var(--rose); margin-top:26px;
 } 
 
+.signature-photo{
+  display:block; margin:18px auto 0;
+  width:96px; height:96px;
+  object-fit:cover;
+  border-radius:50%;
+  border:2px solid var(--rose);
+  box-shadow:0 10px 30px -10px rgba(0,0,0,0.6);
+}
+
 .start-btn-wrap{text-align:center; margin-top:44px;}
 .start-btn{
   font-family:'JetBrains Mono', monospace;
@@ -388,6 +397,7 @@ button:focus-visible, input:focus-visible{
       <h1>Zwei <span class="accent">Branches</span>,<br>ein gemeinsamer <span class="accent">Merge</span>.</h1>
       <p id="love-text"><!-- wird per JS befüllt --></p>
 	  <p class="signature" id="signature-text"><!-- wird per JS befüllt --></p>
+	  <img class="signature-photo" id="signature-photo" alt="Bernd &amp; Carla" onerror="this.style.display='none'">
     </div>
 	
 	<div class="repo-header">
@@ -476,6 +486,9 @@ const CONFIG = {
 	
   // Unterschrift unter der Karte
   signature: "Bernd &amp; Carla",
+  
+  // Foto von uns
+  signaturePhoto: "signatur.jpg",
 
   // Boot-Sequenz "start_marriage.exe"
   // type: "info" | "ok" | "warn" | "dim" | "bar" (Ladebalken) | "pause"
@@ -591,6 +604,7 @@ function buildCard(){
     .replace(/\{wifeName\}/g, CONFIG.wifeName);
   document.getElementById('love-text').innerHTML = loveHtml;
   document.getElementById('signature-text').innerHTML = CONFIG.signature;
+  document.getElementById('signature-photo').src = CONFIG.signaturePhoto;
   setTimeout(updateScrollHint, 60);
 }
 
